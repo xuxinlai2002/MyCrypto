@@ -24,9 +24,9 @@ export default function ConfirmSwapMultiTx({
   onClick
 }: Props) {
   const { fromAsset, toAsset, fromAmount, toAmount } = assetPair;
-  const status = transactions.map(t => R.path(['status'], t));
+  const status = transactions.map((t) => R.path(['status'], t));
 
-  const broadcasting = status.findIndex(s => s === ITxStatus.BROADCASTED);
+  const broadcasting = status.findIndex((s) => s === ITxStatus.BROADCASTED);
 
   const approveTx = {
     title: translateRaw('APPROVE_SWAP'),
@@ -54,6 +54,8 @@ export default function ConfirmSwapMultiTx({
       <SwapFromToDiagram
         fromSymbol={fromAsset.symbol}
         toSymbol={toAsset.symbol}
+        fromUUID={fromAsset.uuid}
+        toUUID={toAsset.uuid}
         fromAmount={fromAmount.toString()}
         toAmount={toAmount.toString()}
       />

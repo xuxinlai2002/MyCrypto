@@ -12,6 +12,7 @@ import { AssetMapService, DeFiReserveMapService } from './ApiService';
 
 interface State {
   rates: IRates;
+  assetMapping: AssetMappingListObject;
   getRate(ticker: TTicker): number | undefined;
   getAssetRate(asset: Asset): number | undefined;
   getPoolAssetReserveRate(defiPoolTokenUUID: string, assets: Asset[]): ReserveAsset[];
@@ -61,7 +62,7 @@ const destructureCoinGeckoIds = (rates: IRates, assetMap: AssetMappingListObject
   // From: { ["ethereum"]: { "usd": 123.45,"eur": 234.56 } }
   // To: { [uuid for coinGeckoId "ethereum"]: { "usd": 123.45, "eur": 234.56 } }
   const updateRateObj = (acc: any, curValue: TTicker): IRates => {
-    const data: any = Object.keys(assetMap).find(uuid => assetMap[uuid].coinGeckoId === curValue);
+    const data: any = Object.keys(assetMap).find((uuid) => assetMap[uuid].coinGeckoId === curValue);
     acc[data] = rates[curValue];
     return acc;
   };
@@ -79,7 +80,7 @@ export const RatesContext = createContext({} as State);
 export function RatesProvider({ children }: { children: React.ReactNode }) {
   const { assetUUIDs } = useContext(StoreContext);
   const { settings, updateSettingsRates } = useContext(SettingsContext);
-  const [assetMapping, setAssetMapping] = useState({});
+  const [assetMapping, setAssetMapping] = useState({} as AssetMappingListObject);
   const [reserveRateMapping, setReserveRateMapping] = useState({} as ReserveMappingListObject);
   const worker = useRef<undefined | PollingService>();
 
@@ -100,7 +101,7 @@ export function RatesProvider({ children }: { children: React.ReactNode }) {
       // The cryptocompare api that our proxie uses fails gracefully and will return a conversion rate
       // even if some are tickers are invalid (e.g WETH, GoerliETH etc.)
       const value = await mounted(
-        fetchAssetMappingList().then(e => {
+        fetchAssetMappingList().then((e) => {
           return e;
         })
       );
@@ -110,7 +111,7 @@ export function RatesProvider({ children }: { children: React.ReactNode }) {
 
   useEffectOnce(() => {
     (async () => {
-      const value = await mounted(fetchDeFiReserveMappingList().then(e => e));
+      const value = await mounted(fetchDeFiReserveMappingList().then((e) => e));
       setReserveRateMapping(value);
     })();
   });
@@ -127,7 +128,7 @@ export function RatesProvider({ children }: { children: React.ReactNode }) {
       buildAssetQueryUrl(formattedCoinGeckoIds, DEFAULT_FIAT_PAIRS), // @TODO: More elegant conversion then `DEFAULT_FIAT_RATE`
       POLLING_INTERRVAL,
       updateRates,
-      err => console.debug('[RatesProvider]', err)
+      (err) => console.debug('[RatesProvider]', err)
     );
 
     // Start Polling service
@@ -145,6 +146,7 @@ export function RatesProvider({ children }: { children: React.ReactNode }) {
     get rates() {
       return settings.rates;
     },
+    assetMapping,
     getRate: (ticker: TTicker) => {
       // @ts-ignore until we find a solution for TS7053 error
       return state.rates[ticker] ? state.rates[ticker].usd : DEFAULT_FIAT_RATE;
@@ -158,7 +160,7 @@ export function RatesProvider({ children }: { children: React.ReactNode }) {
       if (!reserveRateObject) return [];
       return reserveRateObject.reserveRates
         .map((item: ReserveMappingRate) => {
-          const detectedReserveAsset = assets.find(asset => asset.uuid === item.assetId);
+          const detectedReserveAsset = assets.find((asset) => asset.uuid === item.assetId);
           if (!detectedReserveAsset) return;
 
           return { ...detectedReserveAsset, reserveExchangeRate: item.rate };

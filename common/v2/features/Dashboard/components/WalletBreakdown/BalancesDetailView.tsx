@@ -6,7 +6,6 @@ import { translateRaw } from 'v2/translations';
 import { DashboardPanel, CollapsibleTable, AssetIcon, Currency } from 'v2/components';
 import { WalletBreakdownProps } from './types';
 import { BREAK_POINTS } from 'v2/theme';
-import { TSymbol } from 'v2/types';
 
 import backArrowIcon from 'common/assets/images/icn-back-arrow.svg';
 
@@ -84,7 +83,7 @@ export default function BalancesDetailView({
     body: balances.map((balance, index) => {
       return [
         <Label key={index}>
-          <Icon symbol={balance.ticker as TSymbol} size={'2rem'} />
+          <Icon uuid={balance.uuid} size={'2rem'} />
           {balance.name}
         </Label>,
         <RowAlignment key={index} align="right">

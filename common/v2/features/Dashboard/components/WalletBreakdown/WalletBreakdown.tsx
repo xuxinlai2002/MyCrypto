@@ -80,6 +80,7 @@ export function WalletBreakdown() {
     .map((asset: StoreAsset) => ({
       name: asset.name || translateRaw('WALLET_BREAKDOWN_UNKNOWN'),
       ticker: asset.ticker,
+      uuid: asset.uuid,
       amount: weiToFloat(asset.balance, asset.decimal),
       fiatValue: convertToFiatFromAsset(asset, getAssetRate(asset))
     }))

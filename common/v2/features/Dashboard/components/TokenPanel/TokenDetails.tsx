@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import styled from 'styled-components';
 
 import { translateRaw } from 'v2/translations';
-import { AssetWithDetails, TSymbol } from 'v2/types';
+import { AssetWithDetails } from 'v2/types';
 import { DashboardPanel, AssetIcon } from 'v2/components';
 import { getNetworkById, StoreContext } from 'v2/services/Store';
 import { COLORS, FONT_SIZE, SPACING } from 'v2/theme';
@@ -49,7 +49,7 @@ interface SectionProps {
 }
 
 const Section = styled.div<SectionProps>`
-  margin-top: ${props => (props.noMargin ? 0 : '23px')};
+  margin-top: ${(props) => (props.noMargin ? 0 : '23px')};
 `;
 
 const TwoColumnsWrapper = styled.div`
@@ -167,7 +167,7 @@ export function TokenDetails(props: Props) {
   // Find available supported social links
   const filteredSocial = (details.social || {}) as ISocial;
   Object.keys(filteredSocial).forEach(
-    key =>
+    (key) =>
       (!filteredSocial[key] || !supportedSocialNetworks.hasOwnProperty(key)) &&
       delete filteredSocial[key]
   );
@@ -179,7 +179,7 @@ export function TokenDetails(props: Props) {
         <DetailsHeadingWrapper>
           <BackIcon src={backArrowIcon} onClick={() => setShowDetailsView(false)} />
           <TokenIcon>
-            <AssetIcon symbol={currentToken.ticker as TSymbol} size={'30px'} />
+            <AssetIcon uuid={currentToken.uuid} size={'30px'} />
           </TokenIcon>
           {currentToken.name}
         </DetailsHeadingWrapper>
@@ -230,7 +230,7 @@ export function TokenDetails(props: Props) {
                     <ResourceIcon src={whitepaperIcon} />
                   </a>
                 )}
-                {filteredSocialArray.map(social => {
+                {filteredSocialArray.map((social) => {
                   return (
                     <a key={social} href={details.social[social]} target="_blank" rel="noreferrer">
                       <SocialIcon

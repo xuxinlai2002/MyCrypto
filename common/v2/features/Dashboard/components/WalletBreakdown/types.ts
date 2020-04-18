@@ -5,6 +5,7 @@ export interface Balance {
   amount: number;
   fiatValue: number;
   ticker: string;
+  uuid: string;
   isOther?: boolean;
 }
 

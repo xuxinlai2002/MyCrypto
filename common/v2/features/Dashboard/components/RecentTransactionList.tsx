@@ -10,7 +10,7 @@ import {
   Account
 } from 'v2/components';
 import { truncate, convertToFiat } from 'v2/utils';
-import { ITxReceipt, ITxStatus, StoreAccount, Asset, TSymbol } from 'v2/types';
+import { ITxReceipt, ITxStatus, StoreAccount, Asset } from 'v2/types';
 import { RatesContext, AddressBookContext, getLabelByAddressAndNetwork } from 'v2/services';
 import { translateRaw } from 'v2/translations';
 import {
@@ -75,9 +75,9 @@ const TxTypeConfig: ITxTypeConfig = {
 export const deriveTxType = (accountsList: StoreAccount[], tx: ITxReceipt) => {
   const fromAccount =
     tx.from &&
-    accountsList.find(account => account.address.toLowerCase() === tx.from.toLowerCase());
+    accountsList.find((account) => account.address.toLowerCase() === tx.from.toLowerCase());
   const toAccount =
-    tx.to && accountsList.find(account => account.address.toLowerCase() === tx.to.toLowerCase());
+    tx.to && accountsList.find((account) => account.address.toLowerCase() === tx.to.toLowerCase());
   return !fromAccount || !toAccount
     ? fromAccount
       ? ITxType.OUTBOUND
@@ -105,7 +105,7 @@ const CCircle = styled('div')`
 const SCombinedCircle = (asset: Asset) => {
   return (
     <CCircle>
-      <SAssetIcon symbol={asset.ticker as TSymbol} />
+      <SAssetIcon uuid={asset.uuid} />
     </CCircle>
   );
 };
@@ -125,7 +125,7 @@ export default function RecentTransactionList({ accountsList, className = '' }: 
   const { addressBook } = useContext(AddressBookContext);
   const { getAssetRate } = useContext(RatesContext);
   const noLabel = translateRaw('NO_LABEL');
-  const transactions = accountsList.flatMap(account => account.transactions);
+  const transactions = accountsList.flatMap((account) => account.transactions);
   const accountTxs: ITxReceipt = getTxsFromAccount(accountsList).map((tx: ITxReceipt) => ({
     ...tx,
     txType: deriveTxType(accountsList, tx)
@@ -197,7 +197,7 @@ export default function RecentTransactionList({ accountsList, className = '' }: 
       entries: createEntries(ITxStatus.FAILED, failed)
     }
   ];
-  const filteredGroups = groups.filter(group => group.entries.length !== 0);
+  const filteredGroups = groups.filter((group) => group.entries.length !== 0);
 
   const recentTransactionsTable = {
     head: ['Date', 'From Address', 'To Address', 'Amount', 'View More'],

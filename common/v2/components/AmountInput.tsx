@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import { Input } from '@mycrypto/ui';
 
 import { Asset } from 'v2/types';
-import { TSymbol } from 'v2/types/symbols';
 
 import AssetIcon from './AssetIcon';
 import Typography from './Typography';
@@ -37,7 +36,7 @@ function AmountInput({ asset, value, onChange, onBlur, placeholder, ...props }: 
       iconSide={'right'}
       icon={() => (
         <div>
-          {asset.ticker && <SAssetIcon symbol={asset.ticker as TSymbol} size={'1.5rem'} />}
+          {asset.ticker && <SAssetIcon uuid={asset.uuid} size={'1.5rem'} />}
           <Typography>{asset.ticker}</Typography>
         </div>
       )}
