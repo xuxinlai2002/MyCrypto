@@ -4,13 +4,13 @@ import { bigNumberify, formatEther, BigNumber } from 'ethers/utils';
 import * as R from 'ramda';
 
 import { DEFAULT_ASSET_DECIMAL } from 'v2/config';
-import { ITransaction, IHexStrTransaction } from 'v2/types';
+import { ITransaction, ITxObject } from 'v2/types';
 
 import { gasPriceToBase, toTokenBase, fromWei, toWei, Wei } from './units';
 import { hexEncodeQuantity } from './hexEncode';
 
 export const makeTransaction = (
-  t: Partial<Tx> | Partial<ITransaction> | Partial<IHexStrTransaction> | Buffer | string
+  t: Partial<Tx> | Partial<ITransaction> | Partial<ITxObject> | Buffer | string
 ) => {
   if (R.prop('chainId') !== undefined) {
     // @ts-ignore

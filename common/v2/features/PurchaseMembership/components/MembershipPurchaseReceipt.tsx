@@ -3,6 +3,7 @@ import React from 'react';
 import { TxReceipt, MultiTxReceipt } from 'v2/components/TransactionFlow';
 import { ITxType, TxParcel, StoreAccount } from 'v2/types';
 import { makeTxConfigFromTransaction } from 'v2/features/InteractWithContracts/helpers';
+import { fromTxParcelToTxReceipt } from 'v2/utils';
 import { IMembershipConfig } from '../config';
 
 interface Props {
@@ -18,21 +19,14 @@ export default function MembershipReceipt({
   membershipSelected,
   onComplete
 }: Props) {
-  const txConfigs = transactions.map(tx => {
-    return makeTxConfigFromTransaction(tx.txRaw, account, membershipSelected.price);
-  });
-
-  const txReceipts = transactions.map((tx, idx) => {
-    return {
-      ...txConfigs[idx],
-      ...tx.txRaw,
-      hash: tx.txHash
-    };
-  });
+  const txConfigs = transactions.map(tx =>
+    makeTxConfigFromTransaction(tx.txRaw, account, membershipSelected.price)
+  );
+  const txReceipts = transactions.map(tx => fromTxParcelToTxReceipt(tx, account));
 
   return txReceipts.length === 1 ? (
     <TxReceipt
-      txReceipt={txReceipts[0]}
+      txReceipt={txReceipts[0]!}
       txConfig={txConfigs[0]}
       txType={ITxType.PURCHASE_MEMBERSHIP}
       membershipSelected={membershipSelected}

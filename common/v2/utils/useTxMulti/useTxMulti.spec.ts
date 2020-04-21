@@ -3,10 +3,10 @@ import * as R from 'ramda';
 import { fAccount, fNetwork } from '@fixtures';
 
 import { useTxMulti } from './useTxMulti';
-import { ITxObject } from 'v2/types';
+import { ITxObject, TAddress } from 'v2/types';
 
 const createTxRaw = (idx: number): Partial<ITxObject> => ({
-  to: 'address' + idx,
+  to: ('address' + idx) as TAddress,
   value: 'any',
   data: 'empty'
 });

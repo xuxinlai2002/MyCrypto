@@ -1,6 +1,6 @@
 import { ethers } from 'ethers';
 
-import { ITxObject, StoreAccount, ITxConfig } from 'v2/types';
+import { ITxObject, StoreAccount, ITxConfig, TAddress } from 'v2/types';
 import {
   inputValueToHex,
   inputGasPriceToHex,
@@ -45,7 +45,7 @@ export const createPurchaseTx = (payload: MembershipSimpleTxFormFull): Partial<I
 
   return {
     from: payload.account.address,
-    to: membershipSelected.contractAddress,
+    to: membershipSelected.contractAddress as TAddress,
     value: isERC20Tx(payload.asset) ? inputValueToHex('0') : inputValueToHex(payload.amount),
     data,
     gasPrice: inputGasPriceToHex(payload.gasPrice),
